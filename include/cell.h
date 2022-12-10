@@ -9,6 +9,7 @@
 #pragma once
 
 #include <vector>
+#include <ostream>
 
 namespace corvus {
 	// some quick weaving vocabulary (w/ a handweaving floor loom perspective)
@@ -45,8 +46,22 @@ namespace corvus {
 		//! \return minimum number of shafts required (this is typically a limiting factor on looms)
 		//! \note this assumes a rising shed, maybe we should make that an argument
 		uint_fast32_t layout(std::vector<uint_fast32_t>& threading, std::vector< std::vector<uint_fast32_t> >& tieup, std::vector< std::vector<uint_fast32_t> >& treadling) const;
+
+		//! print a single weft to a text file
+		//! \param r weft row to write
+		//! \param os ostream to write to
+		//! \param warpSymb character to use to represent the warp on top
+		//! \param weftSymb character to use to reprsent the weft on top
+		void writeWeft(uint_fast32_t r, std::ostream& os, char warpSymb = '#', char weftSymb = '.') const;
+
+		//! print cell to a text file
+		//! \param os ostream to write to
+		//! \param warpSymb character to use to represent the warp on top
+		//! \param weftSymb character to use to reprsent the weft on top
+		void write(std::ostream& os, char warpSymb = '#', char weftSymb = '.') const;
 	};
 }
 
+inline std::ostream& operator<<(std::ostream& os, corvus::Cell const& c) {c.write(os); return os;}
 
 #endif//_CORVUS_CELL_H_

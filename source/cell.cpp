@@ -144,8 +144,8 @@ uint_fast32_t Cell::layout(std::vector<uint_fast32_t>& threading, std::vector< s
 	// now that we have our set covering weights, do the greedy set cover
 	if (sheds.size() <= availableTreadles) { // trivial case
 		// we just assign a shed to each treadle
-		tieup.resize(shafts.size());
-		for (size_t i = 0; i < shafts.size(); i++) tieup[i] = shedShafts[i];
+		tieup.resize(shedShafts.size());
+		for (size_t i = 0; i < shedShafts.size(); i++) tieup[i] = shedShafts[i];
 
 		// treadling is trivial as well
 		treadling.resize(wefts);
@@ -167,5 +167,17 @@ uint_fast32_t Cell::layout(std::vector<uint_fast32_t>& threading, std::vector< s
 
 	// not helpful for a straight tieup but could be useful otherwise
 	// we could also pass in an allowable number of shafts to make less minimal shaft but more user friendly tieups
-	return shafts.size();
+	return static_cast<uint_fast32_t>(shafts.size()); // we have bigger issues if there are more than 2^32 shafts...
+}
+
+
+void Cell::writeWeft(uint_fast32_t r, std::ostream& os, char warpSymb, char weftSymb) const {
+	for (uint_fast32_t c = 0; c < warps; c++) os << ' ' << (mask[r * warps + c] ? '#' : '.');
+}
+
+void Cell::write(std::ostream& os, char warpSymb, char weftSymb) const {
+	for (uint_fast32_t r = 0; r < wefts; r++) {
+		writeWeft(r, os, warpSymb, weftSymb);
+		os << '\n';
+	}
 }

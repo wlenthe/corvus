@@ -197,5 +197,4 @@ namespace corvus {
 inline std::istream& operator>>(std::istream& is, corvus::Wif      & w) {w.read (is); return is;}
 inline std::ostream& operator<<(std::ostream& os, corvus::Wif const& w) {w.write(os); return os;}
 
-
 #endif//_WIF_H_
